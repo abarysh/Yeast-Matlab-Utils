@@ -72,6 +72,6 @@ translated(inds1(inds2)) = 1;
 
 inds1 = find(~translated);
 if ~isempty(inds1)
-    fprintf(['\nThese items were not translated and don''t look like any verified or uncharacterized ' direction{2} ':\n']);
+    fprintf(['\nThese items were not translated and don''t look like any verified/uncharacterized/dubious ' direction{2} ':\n']);
     disp(newNames(inds1));
 end
