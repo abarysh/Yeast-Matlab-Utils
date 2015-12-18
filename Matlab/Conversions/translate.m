@@ -68,7 +68,7 @@ if ~isempty(inds2)
     disp(newNames(inds1(inds2)));
 end
 
-translated(inds1) = 1;
+translated(inds1(inds2)) = 1;
 
 inds1 = find(~translated);
 if ~isempty(inds1)
