@@ -5,7 +5,8 @@ Perl/*
 Python/*
 
 Matlab/*
-!Matlab/Conversions/*
+!Matlab/Conversions/translate.m
+!Matlab/IO/dataread.m
 
 # All files that start with "." or end with "~"
 .*
