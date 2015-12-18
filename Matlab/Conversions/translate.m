@@ -1,7 +1,7 @@
 % This function will take an array of names in one format (ORFs or gene names, either standard or aliases)
 % and will return an array in the specified format (ORFs or gene names).
 
-function [newNames, translated] = translate(varargin)
+function newNames = translate(varargin)
 
 load uncharacterized_verified_151216.mat;
 
