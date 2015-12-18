@@ -1,0 +1,13 @@
+# Folders to ignore
+Java/*
+Other/*
+Perl/*
+Python/*
+
+Matlab/*
+!Matlab/Conversions/*
+
+# All files that start with "." or end with "~"
+.*
+!.gitignore
+*~
