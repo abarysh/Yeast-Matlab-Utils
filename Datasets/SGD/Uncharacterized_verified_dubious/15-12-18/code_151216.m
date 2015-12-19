@@ -13,11 +13,13 @@ for i = 1 : length(aliases)
     aliases{i} = regexp(aliases{i}, ' ', 'split');  
 end
 
-uv.orfs = unique(orfs);
-uv.genenames = unique([genenames; [aliases{:}]']);
+all_aliases = unique([aliases{:}]');
 
-% Only retain 3-letter code genenames
-uv.genenames(~isgenename(uv.genenames)) = [];
+% Only retain 3-letter code aliases
+all_aliases(~isgenename(all_aliases) & ~isorf(all_aliases)) = [];
+
+uv.orfs = unique(orfs);
+uv.genenames = unique([genenames; all_aliases]);
 
 uv.namespace = zeros(length(uv.orfs),length(uv.genenames));
 
