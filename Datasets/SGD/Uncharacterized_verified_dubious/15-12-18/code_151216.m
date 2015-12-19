@@ -1,3 +1,5 @@
+addpath(genpath('/Users/Anastasia/Laboratory/Utils/'))
+
 fid = fopen('results.tsv','r');
 C = textscan(fid, '%s %s %s %s','delimiter','\t');
 fclose(fid);
@@ -15,8 +17,7 @@ uv.orfs = unique(orfs);
 uv.genenames = unique([genenames; [aliases{:}]']);
 
 % Only retain 3-letter code genenames
-inds = find(cellfun(@isempty, regexp(uv.genenames, '^[A-Z]{3,}[0-9]+')));
-uv.genenames(inds) = [];
+uv.genenames(~isgenename(uv.genenames)) = [];
 
 uv.namespace = zeros(length(uv.orfs),length(uv.genenames));
 
