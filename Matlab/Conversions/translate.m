@@ -23,7 +23,7 @@ end
 %% Initial checks
 
 if strcmp('genenames', direction{1})
-    inds = find(cellfun(@isempty, regexp(oldNames, '^[A-Z]{3,}[0-9]+')));
+    inds = find(~isgenename(oldNames));
     if ~isempty(inds)
         fprintf('\nThese items don''t look like gene names:\n');
         disp(oldNames(inds));
@@ -31,7 +31,7 @@ if strcmp('genenames', direction{1})
 end
 
 if strcmp('orfs', direction{1})
-    inds = find(cellfun(@isempty, regexp(oldNames, '^Y[A-P][RL][0-9]{3}[CW](-[ABC])*')));
+    inds = find(~isorf(oldNames));
     if ~isempty(inds)
         fprintf('\nThese items don''t look like ORFs:\n');
         disp(oldNames(inds));
