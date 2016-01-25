@@ -2,3 +2,4 @@
 function newNames = cleanOrf(oldNames)
 
 newNames = regexprep(oldNames, '[_ .,''"`!@#$%^&*()[]{}+=|~]','');
+newNames = upper(newNames);
