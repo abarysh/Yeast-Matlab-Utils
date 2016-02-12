@@ -1,4 +1,4 @@
-function bool = isgenename(vector)
+function bool = is_genename(vector)
 
 num = cellfun(@isnumeric, vector);
 

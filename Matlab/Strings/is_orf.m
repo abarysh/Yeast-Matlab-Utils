@@ -1,4 +1,4 @@
-function bool = isorf(vector)
+function bool = is_orf(vector)
 
 num = cellfun(@isnumeric, vector);
 
