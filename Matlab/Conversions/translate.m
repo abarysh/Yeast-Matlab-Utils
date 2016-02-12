@@ -23,7 +23,7 @@ end
 %% Initial checks
 
 if strcmp('genenames', direction{1})
-    inds = find(~isgenename(oldNames));
+    inds = find(~is_genename(oldNames));
     if ~isempty(inds)
         fprintf('\nThese items don''t look like gene names:\n');
         disp(oldNames(inds));
@@ -31,7 +31,7 @@ if strcmp('genenames', direction{1})
 end
 
 if strcmp('orfs', direction{1})
-    inds = find(~isorf(oldNames));
+    inds = find(~is_orf(oldNames));
     if ~isempty(inds)
         fprintf('\nThese items don''t look like ORFs:\n');
         disp(oldNames(inds));
