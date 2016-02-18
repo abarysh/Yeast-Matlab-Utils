@@ -1,5 +1,5 @@
 function [filenames, DATA] = read_data(varargin) %type, filename, ...
-%this function replaces all the 
+ 
 filenames = varargin{2};
 type = varargin{1};
 
@@ -19,13 +19,13 @@ switch type
         end
         fclose(fid);
     case 'xlsread' 
-        [~, ~, DATA] = xlsread(varargin{2:end}); %Do I only accept the final output?
+        [~, ~, DATA] = xlsread(varargin{2:end});
     case 'dlmread'
-        DATA = dlmread(varargin{2:end}); %This should work fine.
+        DATA = dlmread(varargin{2:end});
     case 'read_matrix_file'
-        DATA = read_matrix_file(varargin{2:end}); %This works perfectly fine
+        DATA = read_matrix_file(varargin{2:end});
     case 'importdata'
-        DATA = importdata(varargin{2:end}); %This should work fine.
+        DATA = importdata(varargin{2:end});
     otherwise
         error('Not Valid Function');
 end
