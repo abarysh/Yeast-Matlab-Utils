@@ -15,7 +15,7 @@ for i = 1 : length(pm.who)
 %         t = [t ' by ' pm.how{i}];
 %     end
 
-    if ~isempty(pm.condition{i})
+    if isfield(pm, 'condition') && ~isempty(pm.condition{i})
         t = [t '; ' pm.condition{i}];
     end
     
