@@ -1,17 +1,28 @@
-function D = read_matrix_file(input_file, numrowheaders, numcolheaders)
+function D = read_matrix_file(input_file, varargin)
 
+%% Usage
 %
-% [labels_row, labels_col, data] = read_matrix_file(input_file, num_row_headers, num_col_headers)
+% D = read_matrix_file(input_file, num_row_headers, num_col_headers)
 % TREEVIEW FILE: num_row_headers = 2, num_col_headers = 2
 % 
 
-if nargin < 3 || isempty(numrowheaders)
-    numrowheaders = 1;
+%% Check inputs
+
+numrowheaders = 1;
+numcolheaders = 1;
+
+if nargin > 1 && isnumeric(varargin{1}) && isnumeric(varargin{2})
+    numrowheaders = varargin{1};
+    numcolheaders = varargin{2};
 end
 
-if nargin < 3 || isempty(numcolheaders)
-    numcolheaders = 1;
+% Show GUI-style progress bar
+PROGRESSBAR = 0;
+if ~isempty(find(strcmpi('ProgressBar', varargin)))
+    PROGRESSBAR = varargin{find(strcmpi('ProgressBar', varargin))+1};   
 end
+
+%%
 
 D.numrowheaders = numrowheaders;
 D.numcolheaders = numcolheaders;
@@ -20,10 +31,20 @@ D.numcolheaders = numcolheaders;
 
 fid = fopen(input_file,'r');
 if fid == -1
-    fprintf('Unable to open file %s\n', input_file);
+    error(sprintf('Unable to open file %s\n', input_file));
     return;
 end
 
+% Get the number of lines, if possible
+lineCount = -1;
+if ~ispc
+    [status, cmdout]= system(['wc -l ' input_file]);
+    if status ~= 1
+        scanCell = textscan(cmdout,'%u %s');
+        lineCount = scanCell{1}; 
+    end
+end
+lineCount = lineCount - numcolheaders;
 
 % Get column headers
 D.labels_col = {};
@@ -47,15 +68,47 @@ fmt = [repmat('%s ', 1, numrowheaders) repmat('%f ', 1, length(D.labels_col))];
 D.labels_row = cell(1,numrowheaders);
 D.data = [];
 
-r = 1;
+if lineCount > 0
+    if PROGRESSBAR
+        w = waitbar(0, 'Reading the file...','CreateCancelBtn','setappdata(gcbf,''canceling'',1)');
+        setappdata(w, 'canceling', 0);
+    else
+        fprintf('\nReading the file...\n');
+        fprintf(['|', blanks(100), '|\n']);
+        fprintf('|');
+    end
+end
+
+r = 1; y = 0;
 while 1
     line = fgetl(fid);
     if line == -1 
         break; 
     end
     
-    if mod(r,100) == 0
-        fprintf('Read %d lines\n', r);
+    if lineCount > 0
+        
+        % Check for Cancel button press
+        if PROGRESSBAR && getappdata(w,'canceling')
+            delete(w);
+            error('Canceled.');
+        end
+        
+        if PROGRESSBAR
+            waitbar(r / lineCount, w);
+        else
+            x = round(r * 100 / lineCount);
+            if x > y
+                fprintf(repmat('*',1,x-y)); y = x;
+            end
+        end
+        
+    else
+        
+        if mod(r,100) == 0
+            fprintf('Read %d lines\n', r);
+        end
+        
     end
        
     t = textscan(line,fmt,'delimiter','\t');
@@ -66,4 +119,12 @@ while 1
     
     r = r + 1;
     
+end
+
+if lineCount > 0
+    if PROGRESSBAR
+        delete(w);
+    else
+        fprintf('|\n');
+    end
 end

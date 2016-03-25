@@ -15,7 +15,7 @@ end
 
 fprintf('Writing the matrix file\n');
 
-fprintf(fid,'ORF');
+fprintf(fid,'\');
 
 for n = 1 : size(labels_cols,2)
     if n > 1
