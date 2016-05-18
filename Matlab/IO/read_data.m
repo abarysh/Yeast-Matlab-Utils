@@ -26,6 +26,8 @@ switch type
         DATA = read_matrix_file(varargin{2:end});
     case 'importdata'
         DATA = importdata(varargin{2:end});
+    case 'readtable'
+        DATA = readtable(varargin{2:end});
     otherwise
         error('Not Valid Function');
 end
