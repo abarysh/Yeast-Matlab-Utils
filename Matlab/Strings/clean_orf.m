@@ -6,3 +6,4 @@ newNames = oldNames;
 inds = find(~cellfun(@isnumeric, oldNames) & ~cellfun(@isempty, oldNames));
 newNames(inds) = regexprep(oldNames(inds), '[_ .,''"`!@#$%^&*()[]{}+=|~]','');
 newNames(inds) = upper(newNames(inds));
+newNames(inds) = strtrim(newNames(inds));
