@@ -26,11 +26,13 @@ if isinteger(data)
 end
 
 if ~iscell(labels_rows)
-    error('Row labels are supposed to be a cell array.');
+    warning('Row labels are numerical. Transforming them into strings...');
+    labels_rows = cellfun(@num2str, num2cell(labels_rows), 'UniformOutput', false);
 end
 
 if ~iscell(labels_cols)
-    error('Column labels are supposed to be a cell array.');
+    warning('Column labels are numerical. Transforming them into strings...');
+    labels_cols = cellfun(@num2str, num2cell(labels_cols), 'UniformOutput', false);
 end
 
 nrows = size(data,1);
