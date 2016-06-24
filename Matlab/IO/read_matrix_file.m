@@ -22,6 +22,9 @@ if ~isempty(find(strcmpi('ProgressBar', varargin)))
     PROGRESSBAR = varargin{find(strcmpi('ProgressBar', varargin))+1};   
 end
 
+% Empty values
+empty = '(none|empty|blank)';
+
 %%
 
 D.numrowheaders = numrowheaders;
@@ -49,7 +52,14 @@ lineCount = lineCount - numcolheaders;
 % Get column headers
 D.labels_col = {};
 for i = 1 : numcolheaders
-    line = fgetl(fid);
+    
+    line = '';
+    
+    % Skip lines if they start with '#'
+    while isempty(line) || ~isempty(regexp(line, '^#','once'))
+        line = fgetl(fid);
+    end
+    
     tmp = textscan(line,'%s','delimiter','\t');
     colheaders = tmp{1}(numrowheaders+1:end);
     if length(colheaders) > size(D.labels_col,1)
@@ -110,7 +120,10 @@ while 1
         end
         
     end
-       
+    
+    % Replace empty values with NaN
+    line = regexprep(line, empty, 'NaN', 'ignorecase');
+    
     t = textscan(line,fmt,'delimiter','\t');
     t(find(cellfun(@isempty,t))) = {NaN};
     
