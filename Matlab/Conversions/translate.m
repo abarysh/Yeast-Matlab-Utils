@@ -58,6 +58,10 @@ for i = 1 : length(oldNames)
     end
 end
 
+% Fix the "quotes" issue
+inds = find(strcmp('""', newNames));
+newNames(inds) = oldNames(inds);
+
 %% Print report
 
 % Names that weren't translated
