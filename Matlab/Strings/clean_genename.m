@@ -4,4 +4,4 @@ function newNames = clean_genename(oldNames)
 newNames = oldNames;
 inds = find(~cellfun(@isnumeric, oldNames) & ~cellfun(@isempty, oldNames));
 
-newNames(inds) = regexprep(oldNames(inds), '[ .]','');
+newNames(inds) = regexprep(oldNames(inds), '[ .\*]','');
