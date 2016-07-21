@@ -16,6 +16,11 @@ if nargin > 1 && isnumeric(varargin{1}) && isnumeric(varargin{2})
     numcolheaders = varargin{2};
 end
 
+DELIMITER = '\t';
+if ~isempty(find(strcmpi('Delimiter', varargin)))
+    DELIMITER = varargin{find(strcmpi('Delimiter', varargin))+1};
+end
+
 % Show GUI-style progress bar
 PROGRESSBAR = 0;
 if ~isempty(find(strcmpi('ProgressBar', varargin)))
@@ -60,7 +65,7 @@ for i = 1 : numcolheaders
         line = fgetl(fid);
     end
     
-    tmp = textscan(line,'%s','delimiter','\t');
+    tmp = textscan(line,'%s','delimiter',DELIMITER);
     colheaders = tmp{1}(numrowheaders+1:end);
     if length(colheaders) > size(D.labels_col,1)
         tmp = D.labels_col;
@@ -124,7 +129,7 @@ while 1
     % Replace empty values with NaN
     line = regexprep(line, empty, 'NaN', 'ignorecase');
     
-    t = textscan(line,fmt,'delimiter','\t');
+    t = textscan(line,fmt,'delimiter',DELIMITER);
     t(find(cellfun(@isempty,t))) = {NaN};
     
     D.labels_row(r,:) = cat(2,t{1:numrowheaders});
