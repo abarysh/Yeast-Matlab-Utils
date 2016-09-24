@@ -4,7 +4,8 @@ function newNames = clean_orf(oldNames)
 newNames = oldNames;
 
 inds = find(~cellfun(@isnumeric, oldNames) & ~cellfun(@isempty, oldNames));
-newNames(inds) = regexprep(oldNames(inds), '[_ .,''"`!@#$%^&*()[]{}+=|~]','');
+% newNames(inds) = regexprep(oldNames(inds), '[_ .,''"`!@#$%^&*()[]{}+=|~]','');
+newNames(inds) = regexprep(oldNames(inds), '[^a-zA-Z0-9-]','');
 newNames(inds) = upper(newNames(inds));
 newNames(inds) = strtrim(newNames(inds));
 
