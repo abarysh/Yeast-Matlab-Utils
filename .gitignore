@@ -10,3 +10,4 @@ Matlab/*
 .*
 !.gitignore
 *~
+.Rproj.user
