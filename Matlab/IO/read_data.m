@@ -5,14 +5,14 @@ type = varargin{1};
 
 switch type
     case 'textread' %be able to grab any number of outputs
-        fid = fopen(varargin{2},'r');
+        fid = fopen(varargin{2},'r','n','UTF-8');
         DATA = textscan(fid, varargin{3:end});
         if numel(DATA) == 1
             DATA = DATA{1};
         end
         fclose(fid);
     case 'textscan'
-        fid = fopen(varargin{2},'r');
+        fid = fopen(varargin{2},'r','n','UTF-8');
         DATA = textscan(fid, varargin{3:end});
         if numel(DATA) == 1
             DATA = DATA{1};
