@@ -19,5 +19,5 @@ inds = find(orf_length==8);
 orf_token1(inds) = cellfun(@(x) x(1:7), newNames(inds), 'UniformOutput', 0);
 orf_token2(inds) = cellfun(@(x) x(8), newNames(inds), 'UniformOutput', 0);
 
-inds2 = find(is_orf(orf_token1(inds)));
+inds2 = find(is_orf(orf_token1(inds)) & ismember(orf_token2(inds),{'A','B','C','D','E'}));
 newNames(inds(inds2)) = strcat(orf_token1(inds(inds2)), '-', orf_token2(inds(inds2)));
