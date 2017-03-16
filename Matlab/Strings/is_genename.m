@@ -11,6 +11,9 @@ bool(strcmp('OM45', vector)) = 1;
 bool(strcmp('YRF1-6', vector)) = 1;
 bool(strcmp('ADE5,7', vector)) = 1;
 bool(strcmp('ARG5,6', vector)) = 1;
+bool(strcmp('MF(ALPHA)1', vector)) = 1;
 bool(strcmp('MF(ALPHA)2', vector)) = 1;
 bool(strcmp('DUR1,2', vector)) = 1;
-bool(strcmp('MF(ALPHA)1', vector)) = 1;
+
+
+

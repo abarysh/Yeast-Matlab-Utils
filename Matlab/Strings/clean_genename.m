@@ -6,6 +6,17 @@ inds = find(~cellfun(@isnumeric, oldNames) & ~cellfun(@isempty, oldNames));
 
 newNames(inds) = regexprep(oldNames(inds), '[^a-zA-Z0-9'',\-]','');
 
+%% Fix some common genename issues in yeast
+
+newNames = regexprep(newNames, 'ADE5\-*7', 'ADE5,7');
+newNames = regexprep(newNames, 'ARG5\-*6', 'ARG5,6');
+newNames = regexprep(newNames, 'DUR1\-*2', 'DUR1,2');
+newNames = regexprep(newNames, 'MF\-*ALPHA\-*1', 'MF(ALPHA)1');
+newNames = regexprep(newNames, 'MF\-*ALPHA\-*2', 'MF(ALPHA)2');
+newNames = regexprep(newNames, 'AI5\-*ALPHA', 'AI5_ALPHA');
+newNames = regexprep(newNames, 'AI5\-*BETA', 'AI5_BETA');
+
+
 %% Correct missing hyphens in ORFs (e.g., YAL064CA)
 
 orf_length = cellfun(@length, newNames);
