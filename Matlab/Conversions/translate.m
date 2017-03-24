@@ -20,6 +20,8 @@ if nargin > 1
     direction = {direction{~ismember(direction, varargin{2})}, varargin{2}};
 end
 
+verbose = ismember('verbose', varargin);
+
 %% Initial checks
 
 if strcmp('genenames', direction{1})
@@ -70,24 +72,28 @@ newNames(inds) = oldNames(inds);
 
 %% Print report
 
-% Names that weren't translated
-inds1 = find(~translated);
-inds2 = find(ismember(newNames(inds1), uv.(direction{2})));
-if ~isempty(inds2)
-    fprintf(['\nThese items were not translated but are already ' direction{2} ':\n']);
-    disp(newNames(inds1(inds2)));
-end
+if verbose
+    
+    % Names that weren't translated
+    inds1 = find(~translated);
+    inds2 = find(ismember(newNames(inds1), uv.(direction{2})));
+    if ~isempty(inds2)
+        fprintf(['\nThese items were not translated but are already ' direction{2} ':\n']);
+        disp(newNames(inds1(inds2)));
+    end
 
-translated(inds1(inds2)) = 1;
+    % translated(inds1(inds2)) = 1;
 
-inds1 = find(~translated);
-if ~isempty(inds1)
-    fprintf(['\nThese items were not translated and don''t look like any verified/uncharacterized/dubious ' direction{2} ':\n']);
-    disp(newNames(inds1));
-end
+    inds1 = find(~translated);
+    if ~isempty(inds1)
+        fprintf(['\nThese items were not translated and don''t look like any verified/uncharacterized/dubious ' direction{2} ':\n']);
+        disp(newNames(inds1));
+    end
 
-inds1 = find(ambiguous);
-if ~isempty(inds1)
-    fprintf(['\nThese items are ambiguous (have more than 1 translation). The first (random) translation was picked:\n']);
-    disp(oldNames(inds1));
+    inds1 = find(ambiguous);
+    if ~isempty(inds1)
+        fprintf(['\nThese items are ambiguous (have more than 1 translation). The first (random) translation was picked:\n']);
+        disp(oldNames(inds1));
+    end
+    
 end
