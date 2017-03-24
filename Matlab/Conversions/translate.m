@@ -85,3 +85,9 @@ if ~isempty(inds1)
     fprintf(['\nThese items were not translated and don''t look like any verified/uncharacterized/dubious ' direction{2} ':\n']);
     disp(newNames(inds1));
 end
+
+inds1 = find(ambiguous);
+if ~isempty(inds1)
+    fprintf(['\nThese items are ambiguous (have more than 1 translation). The first (random) translation was picked:\n']);
+    disp(oldNames(inds1));
+end
