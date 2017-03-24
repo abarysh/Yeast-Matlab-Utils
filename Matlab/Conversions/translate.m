@@ -1,7 +1,7 @@
 % This function will take an array of names in one format (ORFs or gene names, either standard or aliases)
 % and will return an array in the specified format (ORFs or gene names).
 
-function [newNames, translated] = translate(varargin)
+function [newNames, translated, ambiguous] = translate(varargin)
 
 load uncharacterized_verified_dubious_170322.mat;
 uv = uvd;
@@ -44,12 +44,18 @@ if ~issorted(direction)
 end
 
 translated = zeros(length(oldNames),1);
+ambiguous = zeros(length(oldNames),1);
 
 for i = 1 : length(oldNames)
     
     ind1 = find(ismember(uv.(direction{1}),oldNames{i}));
     if ~isempty(ind1)
         ind2 = find(uv.namespace(:,ind1) > 0);
+        
+        if length(ind2) > 1
+            ambiguous(i) = 1;
+        end
+        
         if ~isempty(ind2)
             [~,ix] = sort(uv.namespace(ind2,ind1));
             newNames(i) = uv.(direction{2})(ind2(ix(1)));
