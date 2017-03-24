@@ -1,44 +1,39 @@
 % This function will take an array of names in one format (ORFs or gene names, either standard or aliases)
 % and will return an array in the specified format (ORFs or gene names).
 
-function [newNames, translated, ambiguous] = translate(varargin)
+function [newNames, translated, ambiguous] = translate(oldNames, varargin)
 
 load uncharacterized_verified_dubious_170322.mat;
 uv = uvd;
 
 %% Process inputs
 
-if nargin == 0
-    error('Not enough inputs.');
-end
-
-oldNames = upper(varargin{1});
 newNames = oldNames;
 
 direction = {'genenames','orfs'};
 if nargin > 1
-    direction = {direction{~ismember(direction, varargin{2})}, varargin{2}};
+    direction = {direction{~ismember(direction, varargin{1})}, varargin{1}};
 end
 
 verbose = ismember({'verbose'}, varargin);
 
 %% Initial checks
 
+fprintf('\nAll items: %d\n', length(oldNames));
+
 if strcmp('genenames', direction{1})
     inds = find(~is_genename(oldNames));
     if ~isempty(inds)
-        fprintf('\nThese items don''t look like gene names:\n');
-        disp(oldNames(inds));
+        fprintf('\nItems don''t look like gene names: %d\n', length(inds));
     end
 end
 
 if strcmp('orfs', direction{1})
     inds = find(~is_orf(oldNames));
     if ~isempty(inds)
-        fprintf('\nThese items don''t look like ORFs:\n');
-        disp(oldNames(inds));
+        fprintf('\nItems don''t look like ORFs: %d\n', length(inds));
     end
-end    
+end 
 
 %%
 if ~issorted(direction)
@@ -71,29 +66,26 @@ inds = find(strcmp('""', newNames));
 newNames(inds) = oldNames(inds);
 
 %% Print report
+   
+% Names that weren't translated
+inds1 = find(~translated);
+fprintf('\nItems that were not translated: %d\n', length(inds1));
 
-if verbose
-    
-    % Names that weren't translated
-    inds1 = find(~translated);
-    inds2 = find(ismember(newNames(inds1), uv.(direction{2})));
-    if ~isempty(inds2)
-        fprintf(['\nThese items were not translated but are already ' direction{2} ':\n']);
-        disp(newNames(inds1(inds2)));
-    end
+inds2 = find(ismember(newNames(inds1), uv.(direction{2})));
+fprintf(['\t\t - but are already ' direction{2} ': %d\n'], length(inds2));
 
-    % translated(inds1(inds2)) = 1;
-
-    inds1 = find(~translated);
-    if ~isempty(inds1)
-        fprintf(['\nThese items were not translated and don''t look like any verified/uncharacterized/dubious ' direction{2} ':\n']);
-        disp(newNames(inds1));
-    end
-
-    inds1 = find(ambiguous);
-    if ~isempty(inds1)
-        fprintf(['\nThese items are ambiguous (have more than 1 translation). The first (random) translation was picked:\n']);
-        disp(oldNames(inds1));
-    end
-    
+if strcmp(direction{2}, 'orfs')
+    inds3 = find(~ismember(newNames(inds1), uv.(direction{2})) & is_orf(newNames(inds1)));
+else
+    inds3 = find(~ismember(newNames(inds1), uv.(direction{2})) & is_genename(newNames(inds1)));
 end
+fprintf(['\t\t - or look like ' direction{2} ': %d\n'], length(inds3));
+
+fprintf('\t\t - other: %d\n', length(inds1)-length(inds2)-length(inds3));
+
+
+inds1 = find(ambiguous);
+if ~isempty(inds1)
+    fprintf(['\nItems that are ambiguous (have more than 1 translation, a random one was picked): %d\n'], length(inds1));
+end
+    
