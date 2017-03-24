@@ -20,7 +20,7 @@ if nargin > 1
     direction = {direction{~ismember(direction, varargin{2})}, varargin{2}};
 end
 
-verbose = ismember('verbose', varargin);
+verbose = ismember({'verbose'}, varargin);
 
 %% Initial checks
 
