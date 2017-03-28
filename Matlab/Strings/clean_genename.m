@@ -1,10 +1,10 @@
 % Remove all symbols that should not appear in a gene name
 function newNames = clean_genename(oldNames)
 
-newNames = oldNames;
-inds = find(~cellfun(@isnumeric, oldNames) & ~cellfun(@isempty, oldNames));
+newNames = upper(oldNames);
+inds = find(~cellfun(@isnumeric, newNames) & ~cellfun(@isempty, newNames));
 
-newNames(inds) = regexprep(oldNames(inds), '[^a-zA-Z0-9'',\-]','');
+newNames(inds) = regexprep(newNames(inds), '[^a-zA-Z0-9'',\-]','');
 
 %% Fix some common genename issues in yeast
 
