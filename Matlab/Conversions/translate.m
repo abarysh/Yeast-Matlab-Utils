@@ -40,8 +40,8 @@ if ~issorted(direction)
     uv.namespace = uv.namespace';
 end
 
-translated = zeros(length(oldNames),1);
-ambiguous = zeros(length(oldNames),1);
+translated = false(length(oldNames),1);
+ambiguous = false(length(oldNames),1);
 
 for i = 1 : length(oldNames)
     
@@ -55,7 +55,7 @@ for i = 1 : length(oldNames)
         
         if ~isempty(ind2)
             [~,ix] = sort(uv.namespace(ind2,ind1));
-            newNames(i) = uv.(direction{2})(ind2(ix(1)));
+            newNames(i) = uv.(direction{2})(ind2(ix(1)));  % picking the first name in order of importance
             translated(i) = 1;
         end
     end
@@ -86,6 +86,6 @@ fprintf('\t\t - other: %d\n', length(inds1)-length(inds2)-length(inds3));
 
 inds1 = find(ambiguous);
 if ~isempty(inds1)
-    fprintf(['\nItems that are ambiguous (have more than 1 translation, a random one was picked): %d\n'], length(inds1));
+    fprintf(['\nItems that are ambiguous (have more than 1 translation, the first one was picked): %d\n'], length(inds1));
 end
     
