@@ -96,9 +96,15 @@ end
 
 r = 1; y = 0;
 while 1
+    
     line = fgetl(fid);
+    
     if line == -1 
         break; 
+    end
+    
+    if isempty(line)
+        continue;
     end
     
     if lineCount > 0
